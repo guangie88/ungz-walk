@@ -19,24 +19,30 @@ use failure::Error;
 use filebuffer::FileBuffer;
 use flate2::read::GzDecoder;
 use std::ffi::OsStr;
+use std::fs::remove_file;
 use std::io::Read;
 use std::process;
 use structopt::StructOpt;
 use walkdir::WalkDir;
 
-/// Main program configuration structure
+/// Argument configuration structure
 #[derive(StructOpt, Debug)]
-#[structopt(name = "Un-GZip Walker",
+#[structopt(name = "Un-gzip Walker",
             about = "To perform un-gzip of multiple files contained in directory")]
 struct ArgConfig {
     /// Log configuration file path
     #[structopt(short = "l", long = "log", help = "Log configuration file path")]
     log_config_path: Option<String>,
 
-    /// Glob pattern to apply for matching of files for acceptance
+    /// From root directory to start the un-gzip recursively
     #[structopt(short = "f", long = "from",
                 help = "From root directory to start the un-gzip recursively")]
     from_dir: String,
+
+    /// Delete .gz file after un-gzipping
+    #[structopt(short = "d", long = "delete", default_value = "true",
+                help = "Delete .gz file after un-gzipping")]
+    delete_after: bool,
 }
 
 type Result<T> = std::result::Result<T, Error>;
@@ -50,26 +56,34 @@ fn run() -> Result<()> {
         simple_logger::init()?;
     }
 
-    for entry in WalkDir::new(&args.from_dir) {
-        match entry {
-            Ok(entry) => {
-                let path = entry.path();
-
-                if path.extension() == Some(OsStr::new("gz")) {
-                    let buf = FileBuffer::open(path)?;
-                    let mut decoder = GzDecoder::new(buf.as_ref());
-
-                    let mut s = String::new();
-                    decoder.read_to_string(&mut s)?;
-
-                    let output_file_path = path.with_extension("");
-                    file::put(&output_file_path, s.as_bytes())?;
-                } else {
-                    debug!("IGNORE {:?} because its extension is not '.gz'", path);
-                }
+    let entries = WalkDir::new(&args.from_dir)
+        .into_iter()
+        .inspect(|e| {
+            if let Err(ref e) = *e {
+                error!("DirEntry ERROR: {}", e);
             }
+        })
+        .filter_map(|e| e.ok())
+        .filter(|e| !e.file_type().is_dir());
 
-            Err(e) => error!("DirEntry ERROR: {}", e),
+    for entry in entries {
+        let input_path = entry.path();
+
+        if input_path.extension() == Some(OsStr::new("gz")) {
+            let buf = FileBuffer::open(input_path)?;
+            let mut decoder = GzDecoder::new(buf.as_ref());
+
+            let mut s = String::new();
+            decoder.read_to_string(&mut s)?;
+
+            let output_path = input_path.with_extension("");
+            file::put(&output_path, s.as_bytes())?;
+
+            if args.delete_after {
+                remove_file(input_path)?;
+            }
+        } else {
+            debug!("IGNORE {:?} because its extension is not '.gz'", input_path);
         }
     }
 
