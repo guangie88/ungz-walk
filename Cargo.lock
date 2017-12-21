@@ -635,7 +635,7 @@ dependencies = [
 
 [[package]]
 name = "ungz-walk"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "clippy 0.0.176 (registry+https://github.com/rust-lang/crates.io-index)",
  "failure 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",

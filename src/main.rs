@@ -40,9 +40,9 @@ struct ArgConfig {
     from_dir: String,
 
     /// Delete .gz file after un-gzipping
-    #[structopt(short = "d", long = "delete", default_value = "true",
-                help = "Delete .gz file after un-gzipping")]
-    delete_after: bool,
+    #[structopt(short = "x", default_value = "false",
+                help = "Do not delete .gz file after un-gzipping")]
+    no_delete: bool,
 }
 
 type Result<T> = std::result::Result<T, Error>;
@@ -79,7 +79,7 @@ fn run() -> Result<()> {
             let output_path = input_path.with_extension("");
             file::put(&output_path, s.as_bytes())?;
 
-            if args.delete_after {
+            if !args.no_delete {
                 remove_file(input_path)?;
             }
         } else {
