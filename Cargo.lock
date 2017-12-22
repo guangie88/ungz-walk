@@ -635,7 +635,7 @@ dependencies = [
 
 [[package]]
 name = "ungz-walk"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "clippy 0.0.176 (registry+https://github.com/rust-lang/crates.io-index)",
  "failure 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -644,9 +644,12 @@ dependencies = [
  "flate2 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "log 0.3.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "log4rs 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.24 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_derive 1.0.24 (registry+https://github.com/rust-lang/crates.io-index)",
  "simple_logger 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "structopt 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "structopt-derive 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "toml 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "walkdir 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

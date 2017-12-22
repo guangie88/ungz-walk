@@ -9,10 +9,13 @@ extern crate flate2;
 extern crate log4rs;
 #[macro_use]
 extern crate log;
+#[macro_use]
+extern crate serde_derive;
 extern crate simple_logger;
 extern crate structopt;
 #[macro_use]
 extern crate structopt_derive;
+extern crate toml;
 extern crate walkdir;
 
 use failure::Error;
@@ -23,10 +26,11 @@ use std::fs::remove_file;
 use std::io::Read;
 use std::process;
 use structopt::StructOpt;
+use toml::to_string_pretty;
 use walkdir::WalkDir;
 
 /// Argument configuration structure
-#[derive(StructOpt, Debug)]
+#[derive(Serialize, StructOpt, Debug)]
 #[structopt(name = "Un-gzip Walker",
             about = "To perform un-gzip of multiple files contained in directory")]
 struct ArgConfig {
@@ -40,8 +44,7 @@ struct ArgConfig {
     from_dir: String,
 
     /// Delete .gz file after un-gzipping
-    #[structopt(short = "x", default_value = "false",
-                help = "Do not delete .gz file after un-gzipping")]
+    #[structopt(short = "x", help = "Do not delete .gz file after un-gzipping")]
     no_delete: bool,
 }
 
@@ -50,11 +53,13 @@ type Result<T> = std::result::Result<T, Error>;
 fn run() -> Result<()> {
     let args = ArgConfig::from_args();
 
-    if let Some(log_config_path) = args.log_config_path {
+    if let Some(ref log_config_path) = args.log_config_path {
         log4rs::init_file(log_config_path, Default::default())?;
     } else {
         simple_logger::init()?;
     }
+
+    debug!("```\n{}```", to_string_pretty(&args)?);
 
     let entries = WalkDir::new(&args.from_dir)
         .into_iter()
@@ -79,8 +84,11 @@ fn run() -> Result<()> {
             let output_path = input_path.with_extension("");
             file::put(&output_path, s.as_bytes())?;
 
+            debug!("PROCESSED {:?}", input_path);
+
             if !args.no_delete {
                 remove_file(input_path)?;
+                debug!("> REMOVED {:?}", input_path);
             }
         } else {
             debug!("IGNORE {:?} because its extension is not '.gz'", input_path);
