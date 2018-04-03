@@ -1,4 +1,4 @@
-FROM guangie88/rustfmt-clippy:nightly-2018-04-01
+FROM guangie88/rustfmt-clippy:1.26.0-nightly
 
 WORKDIR /app
 COPY ./Cargo.toml ./Cargo.lock ./rustfmt.toml ./

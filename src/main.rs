@@ -33,7 +33,8 @@ use walkdir::WalkDir;
             about = "To perform un-gzip of multiple files contained in directory")]
 struct ArgConfig {
     /// Log configuration file path
-    #[structopt(short = "l", long = "log", help = "Log configuration file path")]
+    #[structopt(short = "l", long = "log",
+                help = "Log configuration file path")]
     log_config_path: Option<String>,
 
     /// From root directory to start the un-gzip recursively
@@ -42,7 +43,8 @@ struct ArgConfig {
     from_dir: String,
 
     /// Delete .gz file after un-gzipping
-    #[structopt(short = "x", help = "Do not delete .gz file after un-gzipping")]
+    #[structopt(short = "x",
+                help = "Do not delete .gz file after un-gzipping")]
     no_delete: bool,
 }
 
@@ -89,7 +91,10 @@ fn run() -> Result<()> {
                 debug!("> REMOVED {:?}", input_path);
             }
         } else {
-            debug!("IGNORE {:?} because its extension is not '.gz'", input_path);
+            debug!(
+                "IGNORE {:?} because its extension is not '.gz'",
+                input_path
+            );
         }
     }
 
@@ -100,7 +105,11 @@ fn main() {
     match run() {
         Ok(_) => info!("Program completed!"),
         Err(e) => {
-            error!("ERROR: {}\n > BACKTRACE: {}", e.cause(), e.backtrace());
+            error!(
+                "ERROR: {}\n > BACKTRACE: {}",
+                e.cause(),
+                e.backtrace()
+            );
             process::exit(1);
         }
     }
