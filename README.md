@@ -1,21 +1,21 @@
-# `ungz-walk`
+# `unwalk`
 
 Simple program to walk directory recursively and find `.gz` files to perform
-un-zip process.
+un-gzip process.
 
 ## How to Build
 
 Use [https://www.rustup.rs/](`rustup`) and get the commands `cargo` and
 `rustc`.
 
-Run `cargo build --release` to get the program at `./target/release/ungz-walk`.
+Run `cargo build --release` to get the program at `./target/release/unwalk`.
 
 ## How to Run
 
 Assuming there are `.gz` files located within `./data`:
 
 ```bash
-./target/release/ungz-walk -f ./data
+./target/release/unwalk -f ./data
 ```
 
 The above command will walk all sub-directories recursively from `./data`,
@@ -28,5 +28,5 @@ Add flags `-x` to disable the deletion of original `.gz` files, and
 For more information, run:
 
 ```bash
-./target/release/ungz-walk --help
+./target/release/unwalk --help
 ```
