@@ -3,6 +3,12 @@
 Simple program to walk directory recursively and find `.gz` files to perform
 un-gzip process.
 
+[![Build Status](https://travis-ci.org/guangie88/unwalk.svg?branch=master)](https://travis-ci.org/guangie88/unwalk)
+
+[![codecov](https://codecov.io/gh/guangie88/unwalk/branch/master/graph/badge.svg)](https://codecov.io/gh/guangie88/unwalk)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 ## How to Build
 
 Use [https://www.rustup.rs/](`rustup`) and get the commands `cargo` and
