@@ -1,4 +1,12 @@
-#![cfg_attr(feature = "cargo-clippy", deny(clippy_pedantic, warnings))]
+//! # unwalk
+//!
+//! Perform action on matching files/dirs during recursive walking of given
+//! directory. The default action is to perform un-gzip, useful for unarchiving
+//! all `.gz` files when copying files over from AWS S3 / HDFS services, which
+//! also happens to be the original use case of this CLI application.
+
+#![cfg_attr(feature = "cargo-clippy", deny(clippy))]
+#![deny(missing_docs, warnings)]
 
 #[macro_use]
 extern crate clap;
@@ -24,9 +32,9 @@ use std::ffi::OsStr;
 use std::fs::remove_file;
 use std::process;
 use structopt::StructOpt;
-use walkdir::WalkDir;
 use unwalk_base::Action;
 use unwalk_gz::GzAction;
+use walkdir::WalkDir;
 
 fn run(config: &Config) -> Result<()> {
     let entries = WalkDir::new(&config.path)

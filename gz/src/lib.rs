@@ -1,4 +1,9 @@
-#![cfg_attr(feature = "cargo-clippy", deny(clippy_pedantic, warnings))]
+#![cfg_attr(feature = "cargo-clippy", deny(clippy))]
+#![deny(missing_docs, warnings)]
+
+//! # unwalk-base
+//!
+//! Provide un-gzip implementation as the action on matching files.
 
 extern crate file;
 extern crate filebuffer;
@@ -11,6 +16,7 @@ use std::io::Read;
 use std::path::Path;
 use unwalk_base::Action;
 
+/// Implementation for un-gzip action.
 pub struct GzAction;
 
 impl Action for GzAction {
