@@ -337,15 +337,28 @@ name = "unwalk"
 version = "0.2.0"
 dependencies = [
  "failure 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "file 1.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "filebuffer 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "flate2 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.37 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.37 (registry+https://github.com/rust-lang/crates.io-index)",
  "structopt 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "structopt-derive 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "toml 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "unwalk-base 0.2.0",
+ "unwalk-gz 0.2.0",
  "walkdir 2.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "unwalk-base"
+version = "0.2.0"
+
+[[package]]
+name = "unwalk-gz"
+version = "0.2.0"
+dependencies = [
+ "file 1.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "filebuffer 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "flate2 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "unwalk-base 0.2.0",
 ]
 
 [[package]]

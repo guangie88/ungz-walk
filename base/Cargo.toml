@@ -1,0 +1,7 @@
+[package]
+name = "unwalk-base"
+version = "0.2.0"
+authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
+
+[lib]
+path = "src/lib.rs"
