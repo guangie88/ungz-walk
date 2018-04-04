@@ -43,6 +43,8 @@ fn run(config: &Config) -> Result<()> {
         let input_path = entry.path();
 
         if input_path.extension() == Some(OsStr::new("gz")) {
+            v2!(config.verbose, "Processing {:?}", input_path);
+
             let buf = FileBuffer::open(input_path)?;
             let mut decoder = GzDecoder::new(buf.as_ref());
 
@@ -52,16 +54,16 @@ fn run(config: &Config) -> Result<()> {
             let output_path = input_path.with_extension("");
             file::put(&output_path, s.as_bytes())?;
 
-            v3!(config.verbose, "PROCESSED {:?}", input_path);
+            v3!(config.verbose, "Processed {:?}", input_path);
 
             if config.delete {
                 remove_file(input_path)?;
-                v1!(config.verbose, "> REMOVED {:?}", input_path);
+                v1!(config.verbose, "Removed {:?}", input_path);
             }
         } else {
-            v2!(
+            v3!(
                 config.verbose,
-                "IGNORE {:?} because its extension is not '.gz'",
+                "Ignored {:?} because its extension is not '.gz'",
                 input_path
             );
         }
@@ -76,13 +78,7 @@ fn main() {
     match run(&config) {
         Ok(_) => v2!(config.verbose, "Program completed!"),
         Err(e) => {
-            ve1!(
-                config.verbose,
-                "{}\n > BACKTRACE: {}",
-                e.cause(),
-                e.backtrace()
-            );
-
+            eprintln!("{}\n > BACKTRACE: {}", e.cause(), e.backtrace());
             process::exit(1);
         }
     }

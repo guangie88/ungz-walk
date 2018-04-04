@@ -1,11 +1,11 @@
 macro_rules! verbose_log {
     ($v:expr, $level:expr, $fmt:expr) => {
-        if $level <= $v {
+        if $v <= $level {
             println!($fmt);
         }
     };
     ($v:expr, $level:expr, $fmt:expr, $($arg:tt)*) => {
-        if $level <= $v {
+        if $v <= $level {
             println!($fmt, $($arg)*);
         }
     };
@@ -13,12 +13,12 @@ macro_rules! verbose_log {
 
 macro_rules! verbose_elog {
     ($v:expr, $level:expr, $fmt:expr) => {
-        if $level <= $v {
+        if $v <= $level {
             eprintln!($fmt);
         }
     };
     ($v:expr, $level:expr, $fmt:expr, $($arg:tt)*) => {
-        if $level <= $v {
+        if $v <= $level {
             eprintln!($fmt, $($arg)*);
         }
     };
@@ -59,21 +59,3 @@ macro_rules! ve1 {
         verbose_elog!(1, $level, $fmt, $($arg)*);
     };
 }
-
-// macro_rules! ve2 {
-//     ($level:expr, $fmt:expr) => {
-//         verbose_elog!(3, $level, $fmt);
-//     };
-//     ($level:expr, $fmt:expr, $($arg:tt)*) => {
-//         verbose_elog!(2, $level, $fmt, $($arg)*);
-//     };
-// }
-
-// macro_rules! ve3 {
-//     ($level:expr, $fmt:expr) => {
-//         verbose_elog!(3, $level, $fmt);
-//     };
-//     ($level:expr, $fmt:expr, $($arg:tt)*) => {
-//         verbose_elog!(3, $level, $fmt, $($arg)*);
-//     };
-// }
