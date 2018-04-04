@@ -1,5 +1,7 @@
 #![cfg_attr(feature = "clippy", deny(clippy_pedantic))]
 
+#[macro_use]
+extern crate clap;
 extern crate failure;
 #[macro_use]
 extern crate serde_derive;
