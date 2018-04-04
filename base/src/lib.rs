@@ -1,4 +1,4 @@
-#![cfg_attr(feature = "clippy", deny(clippy_pedantic))]
+#![cfg_attr(feature = "cargo-clippy", deny(clippy_pedantic, warnings))]
 
 use std::path::Path;
 
