@@ -5,14 +5,12 @@ authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
 
 [dependencies]
 # clap = "=2.31.2"
-clap = { git = "https://github.com/guangie88/clap-rs.git", rev = "allow-deprecated" }
+clap = { git = "https://github.com/kbknapp/clap-rs.git", rev = "master" }
 failure = "=0.1.1"
 serde = "=1.0.37"
 serde_derive = "=1.0.37"
-# structopt = "=0.2.6"
-structopt = { git = "https://github.com/guangie88/structopt.git", rev = "allow-deprecated" }
-# structopt-derive = "=0.2.6"
-structopt-derive = { git = "https://github.com/guangie88/structopt.git", rev = "allow-deprecated" }
+structopt = "=0.2.6"
+structopt-derive = "=0.2.6"
 toml = "=0.4.5"
 unwalk-base = { path = "base" }
 unwalk-gz = { path = "gz" }
