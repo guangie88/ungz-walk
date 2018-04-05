@@ -1,99 +1,69 @@
-#![cfg_attr(feature = "clippy", deny(warnings))]
+//! # unwalk
+//!
+//! Perform action on matching files/dirs during recursive walking of given
+//! directory. The default action is to perform un-gzip, useful for unarchiving
+//! all `.gz` files when copying files over from AWS S3 / HDFS services, which
+//! also happens to be the original use case of this CLI application.
 
-extern crate failure;
-extern crate file;
-extern crate filebuffer;
-extern crate flate2;
-extern crate log4rs;
+#![cfg_attr(feature = "cargo-clippy", deny(clippy))]
+#![deny(missing_debug_implementations, missing_docs, warnings)]
+
 #[macro_use]
-extern crate log;
+extern crate clap;
+extern crate failure;
 #[macro_use]
 extern crate serde_derive;
-extern crate simple_logger;
 extern crate structopt;
 #[macro_use]
 extern crate structopt_derive;
 extern crate toml;
+extern crate unwalk_base;
+extern crate unwalk_gz;
 extern crate walkdir;
 
-use failure::Error;
-use filebuffer::FileBuffer;
-use flate2::read::GzDecoder;
+mod arg;
+mod error;
+#[macro_use]
+mod verbose;
+
+use arg::Config;
+use error::Result;
 use std::ffi::OsStr;
 use std::fs::remove_file;
-use std::io::Read;
 use std::process;
 use structopt::StructOpt;
-use toml::to_string_pretty;
+use unwalk_base::Action;
+use unwalk_gz::GzAction;
 use walkdir::WalkDir;
 
-/// Argument configuration structure
-#[derive(Serialize, StructOpt, Debug)]
-#[structopt(name = "Un-gzip Walker",
-            about = "To perform un-gzip of multiple files contained in directory")]
-struct ArgConfig {
-    /// Log configuration file path
-    #[structopt(short = "l", long = "log",
-                help = "Log configuration file path")]
-    log_config_path: Option<String>,
-
-    /// From root directory to start the un-gzip recursively
-    #[structopt(short = "f", long = "from",
-                help = "From root directory to start the un-gzip recursively")]
-    from_dir: String,
-
-    /// Delete .gz file after un-gzipping
-    #[structopt(short = "x",
-                help = "Do not delete .gz file after un-gzipping")]
-    no_delete: bool,
-}
-
-type Result<T> = std::result::Result<T, Error>;
-
-fn run() -> Result<()> {
-    let args = ArgConfig::from_args();
-
-    if let Some(ref log_config_path) = args.log_config_path {
-        log4rs::init_file(log_config_path, Default::default())?;
-    } else {
-        simple_logger::init()?;
-    }
-
-    debug!("```\n{}```", to_string_pretty(&args)?);
-
-    let entries = WalkDir::new(&args.from_dir)
+fn run(config: &Config) -> Result<()> {
+    let entries = WalkDir::new(&config.path)
         .into_iter()
         .inspect(|e| {
             if let Err(ref e) = *e {
-                error!("DirEntry ERROR: {}", e);
+                ve1!(config.verbose, "{}", e);
             }
         })
         .filter_map(|e| e.ok())
         .filter(|e| !e.file_type().is_dir());
 
     for entry in entries {
-        let input_path = entry.path();
+        let entry_path = entry.path();
 
-        if input_path.extension() == Some(OsStr::new("gz")) {
-            let buf = FileBuffer::open(input_path)?;
-            let mut decoder = GzDecoder::new(buf.as_ref());
+        if entry_path.extension() == Some(OsStr::new("gz")) {
+            v2!(config.verbose, "Processing {:?}", entry_path);
+            GzAction::execute(entry_path)?;
+            v3!(config.verbose, "Processed {:?}", entry_path);
 
-            let mut s = String::new();
-            decoder.read_to_string(&mut s)?;
-
-            let output_path = input_path.with_extension("");
-            file::put(&output_path, s.as_bytes())?;
-
-            debug!("PROCESSED {:?}", input_path);
-
-            if !args.no_delete {
-                remove_file(input_path)?;
-                debug!("> REMOVED {:?}", input_path);
+            if config.delete {
+                remove_file(entry_path)?;
+                v1!(config.verbose, "Removed {:?}", entry_path);
             }
         } else {
-            debug!(
-                "IGNORE {:?} because its extension is not '.gz'",
-                input_path
+            v3!(
+                config.verbose,
+                "Ignored {:?} because its extension is not '.gz'",
+                entry_path
             );
         }
     }
@@ -102,14 +72,12 @@ fn run() -> Result<()> {
 }
 
 fn main() {
-    match run() {
-        Ok(_) => info!("Program completed!"),
+    let config = Config::from_args();
+
+    match run(&config) {
+        Ok(_) => v2!(config.verbose, "Program completed!"),
         Err(e) => {
-            error!(
-                "ERROR: {}\n > BACKTRACE: {}",
-                e.cause(),
-                e.backtrace()
-            );
+            eprintln!("{}\n > BACKTRACE: {}", e.cause(), e.backtrace());
             process::exit(1);
         }
     }
