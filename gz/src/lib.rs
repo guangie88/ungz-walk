@@ -45,7 +45,8 @@ mod tests {
 
     use self::tempfile::NamedTempFile;
     use super::*;
-    use flate2::{Compression, write::GzEncoder};
+    use flate2::Compression;
+    use flate2::write::GzEncoder;
     use std::io::{self, Write};
 
     fn write_compressed_bytes<B>(bytes: B) -> io::Result<Vec<u8>>
