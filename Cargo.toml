@@ -2,6 +2,17 @@
 name = "unwalk"
 version = "0.2.0-alpha0"
 authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
+description = "Walk directory recursively to un-gzip files"
+documentation = "https://docs.rs/unwalk"
+repository = "https://github.com/guangie88/unwalk"
+readme = "README.md"
+keywords = ["gz", "gzip", "unzip", "walk", "cli"]
+categories = ["command-line-utilities", "compression"]
+license-file = "LICENSE"
+
+[badges]
+travis-ci = { repository = "guangie88/unwalk" }
+codecov = { repository = "https://codecov.io/gh/guangie88/unwalk" }
 
 [dependencies]
 # clap = "=2.31.2"
