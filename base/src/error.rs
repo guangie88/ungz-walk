@@ -8,15 +8,15 @@ use std;
 #[derive(Fail, Debug)]
 pub enum Error {
     /// Error kind variant.
-    #[fail(display = "Kind({})", _0)]
+    #[fail(display = "{}", _0)]
     Kind(ErrorKind),
 
     /// I/O error variant.
-    #[fail(display = "Io({})", _0)]
+    #[fail(display = "{}", _0)]
     Io(#[cause] std::io::Error),
 
     /// Custom error variant. Requires dynamic allocation.
-    #[fail(display = "Custom({})", _0)]
+    #[fail(display = "{}", _0)]
     Custom(#[cause] Custom),
 }
 
@@ -40,7 +40,7 @@ impl From<Custom> for Error {
 
 /// Custom error to include error kind and dynamic allocated error.
 #[derive(Fail, Debug)]
-#[fail(display = "{{ kind: {}, error: {} }}", kind, error)]
+#[fail(display = "Error: {}, Kind: {}", error, kind)]
 pub struct Custom {
     kind: ErrorKind,
     error: Box<std::error::Error + Sync + Send>,
@@ -66,13 +66,13 @@ impl Custom {
 /// Represent the context of failure.
 #[derive(Copy, Clone, Eq, PartialEq, Debug, Fail)]
 pub enum ErrorKind {
+    /// No such directory error kind.
+    #[fail(display = "Given directory not found")]
+    DirectoryNotFound,
+
     /// Invalid format error kind.
     #[fail(display = "Invalid format")]
     InvalidFormat,
-
-    /// Open file error kind.
-    #[fail(display = "Open file")]
-    OpenFile,
 }
 
 /// Alias to result type used within `unwalk`.

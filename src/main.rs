@@ -32,11 +32,15 @@ use std::fs::remove_file;
 use std::process;
 use structopt::StructOpt;
 use unwalk_base::Action;
-use unwalk_base::error::Result;
+use unwalk_base::error::{ErrorKind, Result};
 use unwalk_gz::GzAction;
 use walkdir::WalkDir;
 
 fn run(config: &Config) -> Result<()> {
+    if !config.path.exists() {
+        Err(ErrorKind::DirectoryNotFound)?;
+    }
+
     let entries = WalkDir::new(&config.path)
         .into_iter()
         .inspect(|e| {
@@ -60,9 +64,9 @@ fn run(config: &Config) -> Result<()> {
                 v1!(config.verbose, "Removed {:?}", entry_path);
             }
         } else {
-            v3!(
+            v2!(
                 config.verbose,
-                "Ignored {:?} because its extension is not '.gz'",
+                "Ignored {:?}, extension is not '.gz'",
                 entry_path
             );
         }
@@ -75,13 +79,17 @@ fn main() {
     let config = Config::from_args();
 
     match run(&config) {
-        Ok(_) => v2!(config.verbose, "Program completed!"),
+        Ok(_) => v1!(config.verbose, "Program completed!"),
         Err(e) => {
-            eprintln!(
-                "{:?}\n > BACKTRACE: {:?}",
-                e.cause(),
-                e.backtrace()
-            );
+            eprintln!("{}", e);
+
+            if let Some(cause) = e.cause() {
+                eprintln!("Caused by: {}", cause);
+            }
+
+            if let Some(backtrace) = e.backtrace() {
+                eprintln!("Backtrace: {}", backtrace);
+            }
 
             process::exit(1);
         }
