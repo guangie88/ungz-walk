@@ -8,7 +8,6 @@ repository = "https://github.com/guangie88/unwalk"
 readme = "README.md"
 keywords = ["gz", "gzip", "unzip", "walk", "cli"]
 categories = ["command-line-utilities", "compression"]
-license = "MIT"
 license-file = "LICENSE"
 
 [badges]
