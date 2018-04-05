@@ -6,7 +6,7 @@
 //! also happens to be the original use case of this CLI application.
 
 #![cfg_attr(feature = "cargo-clippy", deny(clippy))]
-#![deny(missing_docs, warnings)]
+#![deny(missing_debug_implementations, missing_docs, warnings)]
 
 #[macro_use]
 extern crate clap;
@@ -52,7 +52,7 @@ fn run(config: &Config) -> Result<()> {
 
         if entry_path.extension() == Some(OsStr::new("gz")) {
             v2!(config.verbose, "Processing {:?}", entry_path);
-            GzAction::execute(entry_path);
+            GzAction::execute(entry_path)?;
             v3!(config.verbose, "Processed {:?}", entry_path);
 
             if config.delete {

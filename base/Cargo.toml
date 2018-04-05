@@ -1,7 +1,10 @@
 [package]
 name = "unwalk-base"
-version = "0.2.0"
+version = "0.2.0-alpha0"
 authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
+
+[dependencies]
+failure = "0.1.1"
 
 [lib]
 path = "src/lib.rs"

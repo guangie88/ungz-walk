@@ -1,6 +1,6 @@
 [package]
 name = "unwalk"
-version = "0.2.0"
+version = "0.2.0-alpha0"
 authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
 
 [dependencies]
