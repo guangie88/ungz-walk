@@ -22,17 +22,17 @@ extern crate unwalk_gz;
 extern crate walkdir;
 
 mod arg;
-mod error;
 #[macro_use]
 mod verbose;
 
 use arg::Config;
-use error::Result;
+use failure::Fail;
 use std::ffi::OsStr;
 use std::fs::remove_file;
 use std::process;
 use structopt::StructOpt;
 use unwalk_base::Action;
+use unwalk_base::error::Result;
 use unwalk_gz::GzAction;
 use walkdir::WalkDir;
 
@@ -77,7 +77,12 @@ fn main() {
     match run(&config) {
         Ok(_) => v2!(config.verbose, "Program completed!"),
         Err(e) => {
-            eprintln!("{}\n > BACKTRACE: {}", e.cause(), e.backtrace());
+            eprintln!(
+                "{:?}\n > BACKTRACE: {:?}",
+                e.cause(),
+                e.backtrace()
+            );
+
             process::exit(1);
         }
     }

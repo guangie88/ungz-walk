@@ -5,9 +5,12 @@
 //!
 //! Provide basic trait for action on matching files.
 
+#[macro_use]
 extern crate failure;
 
-use failure::Error;
+pub mod error;
+
+use error::Error;
 use std::path::Path;
 
 /// Alias to Result type of performing Action.
