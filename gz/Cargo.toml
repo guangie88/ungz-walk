@@ -9,5 +9,8 @@ filebuffer = "0.3.0"
 flate2 = "1.0.1"
 unwalk-base = { path = "../base" }
 
+[dev-dependencies]
+tempfile = "=3.0.0"
+
 [lib]
 path = "src/lib.rs"
