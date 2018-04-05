@@ -8,9 +8,9 @@ COPY ./gz/Cargo.toml ./gz/rustfmt.toml ./gz/
 RUN set -x \
     && cargo fetch --locked -v
 
-COPY ./src ./
-COPY ./base/src ./base/
-COPY ./gz/src ./gz/
+COPY ./src/ ./src/
+COPY ./base/src/ ./base/src/
+COPY ./gz/src/ ./gz/src/
 
 RUN cargo clippy --all \
     && cargo test --all --no-run
