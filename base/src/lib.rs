@@ -22,4 +22,7 @@ pub trait Action {
     fn execute<P>(path: P) -> ActionResult
     where
         P: AsRef<Path>;
+
+    /// Default file name extension(s) to match to perform the action.
+    fn default_extensions() -> &'static [&'static str];
 }

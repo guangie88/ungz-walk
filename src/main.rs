@@ -8,7 +8,8 @@
 #![cfg_attr(feature = "cargo-clippy", deny(clippy))]
 #![deny(missing_debug_implementations, missing_docs, warnings)]
 
-#[macro_use]
+// TODO: this is required is action type is implemented
+// #[macro_use]
 extern crate clap;
 extern crate failure;
 #[macro_use]
@@ -52,23 +53,33 @@ fn run(config: &Config) -> Result<()> {
         .filter(|e| !e.file_type().is_dir());
 
     for entry in entries {
-        let entry_path = entry.path();
+        let loop_fn = || -> Result<()> {
+            let entry_path = entry.path();
 
-        if entry_path.extension() == Some(OsStr::new("gz")) {
-            v2!(config.verbose, "Processing {:?}", entry_path);
-            GzAction::execute(entry_path)?;
-            v3!(config.verbose, "Processed {:?}", entry_path);
+            if entry_path.extension() == Some(OsStr::new("gz")) {
+                v2!(config.verbose, "Processing {:?}", entry_path);
+                GzAction::execute(entry_path)?;
+                v3!(config.verbose, "Processed {:?}", entry_path);
 
-            if config.delete {
-                remove_file(entry_path)?;
-                v1!(config.verbose, "Removed {:?}", entry_path);
+                if config.delete {
+                    remove_file(entry_path)?;
+                    v1!(config.verbose, "Removed {:?}", entry_path);
+                }
+            } else {
+                v2!(
+                    config.verbose,
+                    "Ignored {:?}, extension is not '.gz'",
+                    entry_path
+                );
             }
-        } else {
-            v2!(
-                config.verbose,
-                "Ignored {:?}, extension is not '.gz'",
-                entry_path
-            );
+
+            Ok(())
+        };
+
+        let loop_res = loop_fn();
+
+        if let Err(e) = loop_res {
+            eprintln!("{}", e);
         }
     }
 
@@ -79,7 +90,7 @@ fn main() {
     let config = Config::from_args();
 
     match run(&config) {
-        Ok(_) => v1!(config.verbose, "Program completed!"),
+        Ok(_) => v1!(config.verbose, "Unwalk complete!"),
         Err(e) => {
             eprintln!("{}", e);
 

@@ -1,6 +1,6 @@
 [package]
 name = "unwalk"
-version = "0.2.0-alpha0"
+version = "0.2.0-beta0"
 authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
 description = "Walk directory recursively to un-gzip files"
 documentation = "https://docs.rs/unwalk"
@@ -15,8 +15,7 @@ travis-ci = { repository = "guangie88/unwalk" }
 codecov = { repository = "https://codecov.io/gh/guangie88/unwalk" }
 
 [dependencies]
-# clap = "=2.31.2"
-clap = { git = "https://github.com/kbknapp/clap-rs.git", rev = "master" }
+clap = "=2.31.2"
 failure = "=0.1.1"
 serde = "=1.0.37"
 serde_derive = "=1.0.37"
