@@ -37,6 +37,10 @@ impl Action for GzAction {
 
         Ok(())
     }
+
+    fn default_extensions() -> &'static [&'static str] {
+        &["gz"]
+    }
 }
 
 #[cfg(test)]
