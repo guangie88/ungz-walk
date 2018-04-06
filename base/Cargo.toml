@@ -2,6 +2,10 @@
 name = "unwalk-base"
 version = "0.2.0-beta0"
 authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
+description = "Provides modular features for unwalk"
+documentation = "https://docs.rs/unwalk-base"
+repository = "https://github.com/guangie88/unwalk"
+license-file = "../LICENSE"
 
 [dependencies]
 failure = "0.1.1"
