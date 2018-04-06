@@ -1,3 +1,7 @@
+// once `clap` updates, this can be removed
+// see <https://github.com/kbknapp/clap-rs/pull/1242>
+#![allow(deprecated)]
+
 use std::path::PathBuf;
 
 /// CLI arguments structure
