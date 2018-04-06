@@ -1,6 +1,6 @@
 [package]
 name = "unwalk-base"
-version = "0.2.0-beta0"
+version = "0.2.0-beta1"
 authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
 description = "Provides modular features for unwalk"
 documentation = "https://docs.rs/unwalk-base"
