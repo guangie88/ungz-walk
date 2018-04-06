@@ -22,8 +22,8 @@ serde_derive = "=1.0.37"
 structopt = "=0.2.6"
 structopt-derive = "=0.2.6"
 toml = "=0.4.5"
-unwalk-base = { path = "base" }
-unwalk-gz = { path = "gz" }
+unwalk-base = { path = "base", version = "0.2.0-beta0" }
+unwalk-gz = { path = "gz", version = "0.2.0-beta0" }
 walkdir = "=2.1.4"
 
 [workspace]
