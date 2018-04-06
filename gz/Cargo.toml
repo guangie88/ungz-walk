@@ -1,13 +1,17 @@
 [package]
 name = "unwalk-gz"
-version = "0.2.0-beta0"
+version = "0.2.0-beta1"
 authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
+description = "Provides un-gzip feature for unwalk"
+documentation = "https://docs.rs/unwalk-gz"
+repository = "https://github.com/guangie88/unwalk"
+license-file = "../LICENSE"
 
 [dependencies]
 file = "1.1.1"
 filebuffer = "0.3.0"
 flate2 = "1.0.1"
-unwalk-base = { path = "../base" }
+unwalk-base = { path = "../base", version = "0.2.0-beta1" }
 
 [dev-dependencies]
 tempfile = "=3.0.0"
