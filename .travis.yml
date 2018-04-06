@@ -30,7 +30,7 @@ before_script:
     elif [ "$DOC" = "true" ]; then
       echo "Doc does not deal with before_script"
     else
-      cargo test --no-run --verbose
+      cargo test --all --no-run --verbose
     fi
 
 script:
@@ -42,7 +42,7 @@ script:
     elif [ "$DOC" = "true" ]; then
       cargo doc --all
     else
-      cargo test --verbose
+      cargo test --all --verbose
     fi
 
 after_success:
