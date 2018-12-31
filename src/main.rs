@@ -14,9 +14,8 @@ extern crate clap;
 extern crate failure;
 #[macro_use]
 extern crate serde_derive;
-extern crate structopt;
 #[macro_use]
-extern crate structopt_derive;
+extern crate structopt;
 extern crate toml;
 extern crate unwalk_base;
 extern crate unwalk_gz;
