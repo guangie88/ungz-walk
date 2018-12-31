@@ -68,9 +68,11 @@ after_success:
     fi
 
     # publish all self dependency libraries first
-    cd ignore-lib
-    cargo publish ${CARGO_PUBLISH_FLAGS}
-    cd ..
+    for DEP in base gz; do
+      cd $DEP
+      cargo publish ${CARGO_PUBLISH_FLAGS}
+      cd ..
+    done
     
     # then publish binary
     cargo publish ${CARGO_PUBLISH_FLAGS}
