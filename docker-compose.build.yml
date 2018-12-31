@@ -4,6 +4,7 @@ services:
     image: 'clux/muslrust:stable'
     command:
       - cargo
+      - +stable
       - build
       - '--release'
     volumes:
@@ -14,6 +15,7 @@ services:
     image: 'clux/muslrust:stable'
     command:
       - cargo
+      - +stable
       - clean
     volumes:
       - '.:/volume'
