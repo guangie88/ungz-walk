@@ -25,6 +25,7 @@ toml = "0.4.10"
 unwalk-base = { path = "base", version = "0.2.0" }
 unwalk-gz = { path = "gz", version = "0.2.0" }
 walkdir = "2.1.4"
+vlog = "0.1.4"
 
 [workspace]
 members = [

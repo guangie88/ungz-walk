@@ -1,12 +1,9 @@
-#![cfg_attr(feature = "cargo-clippy", deny(clippy))]
+#![cfg_attr(feature = "cargo-clippy", deny(clippy::all))]
 #![deny(missing_debug_implementations, missing_docs, warnings)]
 
 //! # unwalk-base
 //!
 //! Provide basic trait for action on matching files.
-
-#[macro_use]
-extern crate failure;
 
 pub mod error;
 

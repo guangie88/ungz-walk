@@ -4,11 +4,14 @@
 // #![allow(deprecated)]
 
 use std::path::PathBuf;
+use structopt::StructOpt;
 
 /// CLI arguments structure
-#[derive(Serialize, StructOpt, Debug)]
-#[structopt(name = "Unwalk",
-            about = "Perform action (e.g. un-gzip) on matching paths recursively")]
+#[derive(StructOpt, Debug)]
+#[structopt(
+    name = "Unwalk",
+    about = "Perform action (e.g. un-gzip) on matching paths recursively"
+)]
 pub struct Config {
     #[structopt(parse(from_os_str))]
     /// Root path to start performing action recursively

@@ -1,14 +1,9 @@
-#![cfg_attr(feature = "cargo-clippy", deny(clippy))]
+#![cfg_attr(feature = "cargo-clippy", deny(clippy::all))]
 #![deny(missing_debug_implementations, missing_docs, warnings)]
 
 //! # unwalk-base
 //!
 //! Provide un-gzip implementation as the action on matching files.
-
-extern crate file;
-extern crate filebuffer;
-extern crate flate2;
-extern crate unwalk_base;
 
 use filebuffer::FileBuffer;
 use flate2::read::GzDecoder;
@@ -45,13 +40,11 @@ impl Action for GzAction {
 
 #[cfg(test)]
 mod tests {
-    extern crate tempfile;
-
-    use self::tempfile::NamedTempFile;
     use super::*;
-    use flate2::Compression;
     use flate2::write::GzEncoder;
+    use flate2::Compression;
     use std::io::{self, Write};
+    use tempfile::NamedTempFile;
 
     fn write_compressed_bytes<B>(bytes: B) -> io::Result<Vec<u8>>
     where
