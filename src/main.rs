@@ -25,7 +25,7 @@ mod arg;
 #[macro_use]
 mod verbose;
 
-use arg::Config;
+use crate::arg::Config;
 use failure::Fail;
 use std::ffi::OsStr;
 use std::fs::remove_file;

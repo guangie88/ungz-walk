@@ -1,5 +1,6 @@
 [package]
 name = "unwalk"
+edition = "2018"
 version = "0.2.0"
 authors = ["Chen Weiguang <chen.weiguang@gmail.com>"]
 description = "Walk directory recursively to un-gzip files"

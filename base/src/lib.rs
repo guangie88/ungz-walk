@@ -10,7 +10,7 @@ extern crate failure;
 
 pub mod error;
 
-use error::Error;
+use crate::error::Error;
 use std::path::Path;
 
 /// Alias to Result type of performing Action.
