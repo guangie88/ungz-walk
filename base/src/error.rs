@@ -2,7 +2,7 @@
 //!
 //! Provide all error related implementations.
 
-use std;
+use failure::Fail;
 
 /// Common error type for `unwalk`.
 #[derive(Fail, Debug)]

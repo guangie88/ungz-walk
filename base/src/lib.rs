@@ -1,16 +1,13 @@
-#![cfg_attr(feature = "cargo-clippy", deny(clippy))]
+#![cfg_attr(feature = "cargo-clippy", deny(clippy::all))]
 #![deny(missing_debug_implementations, missing_docs, warnings)]
 
 //! # unwalk-base
 //!
 //! Provide basic trait for action on matching files.
 
-#[macro_use]
-extern crate failure;
-
 pub mod error;
 
-use error::Error;
+use crate::error::Error;
 use std::path::Path;
 
 /// Alias to Result type of performing Action.

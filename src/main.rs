@@ -5,36 +5,21 @@
 //! all `.gz` files when copying files over from AWS S3 / HDFS services, which
 //! also happens to be the original use case of this CLI application.
 
-#![cfg_attr(feature = "cargo-clippy", deny(clippy))]
+#![cfg_attr(feature = "cargo-clippy", deny(clippy::all))]
 #![deny(missing_debug_implementations, missing_docs, warnings)]
 
-// TODO: this is required is action type is implemented
-// #[macro_use]
-extern crate clap;
-extern crate failure;
-#[macro_use]
-extern crate serde_derive;
-extern crate structopt;
-#[macro_use]
-extern crate structopt_derive;
-extern crate toml;
-extern crate unwalk_base;
-extern crate unwalk_gz;
-extern crate walkdir;
-
 mod arg;
-#[macro_use]
-mod verbose;
 
-use arg::Config;
+use crate::arg::Config;
 use failure::Fail;
 use std::ffi::OsStr;
 use std::fs::remove_file;
 use std::process;
 use structopt::StructOpt;
-use unwalk_base::Action;
 use unwalk_base::error::{ErrorKind, Result};
+use unwalk_base::Action;
 use unwalk_gz::GzAction;
+use vlog::{set_verbosity_level, v1, v2, v3, ve1, verbose_elog, verbose_log};
 use walkdir::WalkDir;
 
 fn run(config: &Config) -> Result<()> {
@@ -46,7 +31,7 @@ fn run(config: &Config) -> Result<()> {
         .into_iter()
         .inspect(|e| {
             if let Err(ref e) = *e {
-                ve1!(config.verbose, "{}", e);
+                ve1!("{}", e);
             }
         })
         .filter_map(|e| e.ok())
@@ -57,20 +42,16 @@ fn run(config: &Config) -> Result<()> {
             let entry_path = entry.path();
 
             if entry_path.extension() == Some(OsStr::new("gz")) {
-                v2!(config.verbose, "Processing {:?}", entry_path);
+                v2!("Processing {:?}", entry_path);
                 GzAction::execute(entry_path)?;
-                v3!(config.verbose, "Processed {:?}", entry_path);
+                v3!("Processed {:?}", entry_path);
 
                 if config.delete {
                     remove_file(entry_path)?;
-                    v1!(config.verbose, "Removed {:?}", entry_path);
+                    v1!("Removed {:?}", entry_path);
                 }
             } else {
-                v2!(
-                    config.verbose,
-                    "Ignored {:?}, extension is not '.gz'",
-                    entry_path
-                );
+                v2!("Ignored {:?}, extension is not '.gz'", entry_path);
             }
 
             Ok(())
@@ -88,9 +69,10 @@ fn run(config: &Config) -> Result<()> {
 
 fn main() {
     let config = Config::from_args();
+    set_verbosity_level(config.verbose as usize);
 
     match run(&config) {
-        Ok(_) => v1!(config.verbose, "Unwalk complete!"),
+        Ok(_) => v1!("Unwalk complete!"),
         Err(e) => {
             eprintln!("{}", e);
 

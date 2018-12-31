@@ -7,7 +7,7 @@ services:
     command:
       - bash
       - '-c'
-      - 'rustfmt --write-mode=diff
+      - 'rustfmt --check
            src/**.rs 
            base/src/**.rs
            gz/src/**.rs 
